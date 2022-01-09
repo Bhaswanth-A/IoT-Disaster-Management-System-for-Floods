@@ -91,7 +91,7 @@ void mathAlgo(int n1, int n2)
 //  }
   
   if(arr[n1][n2]-arr[n1][n1]>1 || arr[n1][n1]-arr[n1][n2]>1){
-    nextNode = 4;
+    nextNode = (n-1)/2;
   }
   
   if(arr[n1][n2]-arr[n1][n1]==1 || arr[n1][n1]-arr[n1][n2]==1){
