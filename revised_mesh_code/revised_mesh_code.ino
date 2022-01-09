@@ -4,6 +4,7 @@
 #define MESH_PASSWORD "password"
 #define MESH_PORT 5555
 
+// use JSON to send a lot of messages
 
 Scheduler userScheduler;
 painlessMesh mesh;
@@ -11,6 +12,8 @@ painlessMesh mesh;
 String nodeName = "";
 String nodeNext = "";
 String nodeDestination = "";
+
+bool clearPath = true;
 
 
 void sendMessage();
@@ -21,6 +24,9 @@ void sendMessage(){
   String msg = String(nodeDestination);
   String to = nodeNext;
   mesh.sendSingle(to, msg);
+  if(mesh.sendSingle(to,msg) == false){ // check for busy/broken path
+    clearPath = false;
+  }
 }
 
 void receivedCallback(uint32_t from, String &msg){
@@ -83,7 +89,7 @@ void mathAlgo(int n1, int n2)  // Dijkstra's algorithm
                         { MAX, MAX, MAX, 1, 1, MAX, 0, 1, MAX },
                         { MAX, MAX, MAX, 1, 1, 1, 1, 0, 1 },
                         { MAX, MAX, MAX, MAX, 1, 1, MAX, 1, 0 }};
-    
+
     
   for(i=0;i<n;i++){
       for(j=0;j<n;j++){
@@ -172,6 +178,12 @@ void mathAlgo(int n1, int n2)  // Dijkstra's algorithm
       
     }
   }   
+
+    // obtain new path if a node is busy/broken
+    if(clearPath == false)
+    {
+      arr[n1,nodeNext] == MAX;
+    }
 
   return nodeNext;      
 }
